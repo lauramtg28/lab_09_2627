@@ -166,18 +166,35 @@ sensible_all_lines_table
 ```
 :::
 
-- [ ] Is it reasonable simply to leave out the file that failed? What would you report alongside these results?
+- [x] Is it reasonable simply to leave out the file that failed? What would you report alongside these results?
 
 ::: {.solution}
-
+It is not reasonable to leave out an entire data set as this may hide important results. I would report that one of the data sets was left out as there were not recorded data in that data set. 
 :::
 
 The error from `lm()` above, `0 (non-NA) cases`, comes from deep inside `lm()`, and doesn't say much about what is actually wrong with the data.
 
-- [ ] Change `fit_bill_model()` so that it checks its input first, and stops with a clear error message if there are fewer than two penguins with both bill measurements. Why two?
+- [x] Change `fit_bill_model()` so that it checks its input first, and stops with a clear error message if there are fewer than two penguins with both bill measurements. Why two?
 
 ::: {.solution}
+```{r}
+regres_function <- function(data) {
+  clean_data <- data |> filter(is.na(bill_length_mm) == FALSE) |> filter(is.na(bill_depth_mm)== FALSE)
+  if(length(clean_data) < 2){
+    stop("Need more than 2 penguins with both measurements in data frame")
+   }
+  
+  model <- lm(bill_depth_mm ~ bill_length_mm, data = data)
+  slope <- coef(model)["bill_length_mm"]
+  intercept <- coef(model)["(Intercept)"]
+  results = tibble(
+        slope = slope,
+        intercept = intercept)
+}
 
+
+regres_function(all_penguins_data)
+```
 :::
 
 ## Finished? {.unnumbered}
