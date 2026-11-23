@@ -40,11 +40,14 @@ numbers <- 1:10
 summary_stats <- list(mean, median, sd, var)
 ```
 
-- [ ] Calculate the mean of each vector in `list_of_vectors`.
-- [ ] For each statistic in `summary_stats`, apply the statistic to `numbers`.
+- [x] Calculate the mean of each vector in `list_of_vectors`.
+- [x] For each statistic in `summary_stats`, apply the statistic to `numbers`.
 
 ::: {.solution}
-
+```{r}
+map_dbl(list_of_vectors, \(v) mean(v))
+map_dbl(summary_stats, \(v) v(numbers))
+```
 :::
 
 Next we use `pmap` to draw several plots of the penguins at once.
@@ -58,7 +61,10 @@ variables <- c("flipper_length_mm", "bill_length_mm", "bill_depth_mm")
 - [ ] Create a vector of titles and add them to your plot.
 
 ::: {.solution}
-
+```{r}
+map(variables, \(v) ggplot(aes( x = penguins[[v]], y = penguins$body_mass_g)) +
+      geom_point())
+```
 :::
 
 Finally, we replace a loop with `map`.
